@@ -6,11 +6,12 @@ AP Research project (solo, fully computational).
 lactate improve classification of mammalian cell metabolic states compared with any
 single signal, and does that advantage survive INT8 compression on a Raspberry Pi 4?
 
-## Current stage (due Nov 9, 2026)
+## Current stage (due Nov 25, 2026)
 
 - [ ] Set up VS Code and GitHub repository
 - [ ] Install TensorFlow and SciPy
 - [ ] Confirm parameters and class boundaries (`configs/`)
+- [ ] Start simulating
 
 ## Layout
 
