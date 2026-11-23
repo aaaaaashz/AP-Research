@@ -1,0 +1,80 @@
+# Baseline ODE parameters per serum condition.
+# All values are placeholders (null) until fitted to the digitised Naciri et al. (2008)
+# CHO curves (Fig 3b DO, Fig 4b pH). Per-culture values are drawn log-normally
+# around these baselines with the CV set in base.yaml.
+#
+# Model (own Monod-type assembly):
+#   dX/dt = mu_max * lambda(t) * S/(K_S+S) * X - k_d * K_D/(K_D+S) * X
+#   lambda(t) = 1 / (1 + exp(-(t - t_lag)/tau))
+#   dS/dt = -q_S * S/(K_S+S) * X
+#   dL/dt = Y_LS * q_S * S/(K_S+S) * X - q_L * 1(S < S_shift) * L/(K_L+L) * X
+#   dC/dt = kLa * (C_star - C) - q_O2 * X
+#   pH(t) = pH0 - (L(t) - L0)/beta
+#   DO (% air sat) = 100 * C / C_star
+#
+# OPEN ISSUES (see README):
+#   - Naciri CHO DO starts near 78-80 %, not 100 %: C0 (and possibly the
+#     equilibrium reading) should be fitted rather than assumed at saturation.
+#   - The late DO jump (~140-168 h) is likely impossible with constant q_O2;
+#     o2_uptake may need to become substrate-limited.
+
+o2_uptake: constant   # TODO decide: constant | substrate_limited
+
+units:
+  X: cells/mL
+  S: mM glucose
+  L: mM lactate
+  C: fraction of saturation (C / C_star)
+  time: h
+
+# Every condition below must define each of these.
+parameter_names:
+  - mu_max     # 1/h
+  - K_S        # mM
+  - k_d        # 1/h
+  - K_D        # mM
+  - t_lag      # h
+  - tau        # h
+  - q_S        # mmol/(cell*h)
+  - Y_LS       # mol lactate / mol glucose
+  - q_L        # mmol/(cell*h)
+  - S_shift    # mM
+  - K_L        # mM
+  - kLa        # 1/h
+  - C_star     # relative (1.0 = saturation)
+  - q_O2       # relative/(cell*h)
+  - pH0        # pH units
+  - L0         # mM
+  - beta       # mM per pH unit
+  - S0         # mM
+  - C0         # relative
+
+conditions:
+  "5%":   &placeholder
+    mu_max: null
+    K_S: null
+    k_d: null
+    K_D: null
+    t_lag: null
+    tau: null
+    q_S: null
+    Y_LS: null
+    q_L: null
+    S_shift: null
+    K_L: null
+    kLa: null
+    C_star: null
+    q_O2: null
+    pH0: null
+    L0: null
+    beta: null
+    S0: null
+    C0: null
+  "2.5%": *placeholder
+  "1%":   *placeholder
+  "0%":   *placeholder
+
+# Published checkpoints for the fit checks (Naciri et al. 2008, p. 249)
+reference_checks:
+  pH_at_96h: {"5%": 6.48, "2.5%": 6.48, "1%": 6.57, "0%": 6.75}
+  do_drop_fraction_within_24h: 0.5   # "on average 50% reduction ... within the first 24 h"

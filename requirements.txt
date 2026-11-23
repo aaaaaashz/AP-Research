@@ -1,0 +1,6 @@
+# Python 3.10-3.13 (TensorFlow 2.21 does not support Python 3.14).
+# After installing, pin exact versions with:  pip freeze > requirements-lock.txt
+tensorflow==2.21.0
+scipy
+numpy
+pyyaml

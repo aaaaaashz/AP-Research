@@ -1,0 +1,25 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+.pytest_cache/
+
+# Generated outputs (regenerable from configs + seeds; released separately)
+runs/
+data/generated/
+models/
+*.tflite
+*.keras
+*.h5
+
+# Keep digitised reference curves in git
+!data/raw/
+
+# OS / editor
+.DS_Store
+Thumbs.db
+desktop.ini
+.vscode/
+.idea/

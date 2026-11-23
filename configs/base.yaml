@@ -1,0 +1,37 @@
+# Simulation settings and class boundaries.
+# ODE parameters per serum condition are in configs/generator.yaml.
+# Values marked TODO still need confirming.
+
+# ---------------------------------------------------------------- Simulation settings
+simulation:
+  duration_h: 168
+  sample_interval_min: 10               # 1,008 points per culture
+  initial_density_cells_per_ml: 2.0e5   # Naciri et al. (2008)
+  serum_conditions: ["5%", "2.5%", "1%", "0%"]
+  cultures_per_condition: 60            # 240 cultures per seed
+  variability:
+    distribution: lognormal
+    cv: 0.20                            # every parameter, around its baseline
+  noise_sd:
+    pH: 0.01
+    DO: 1.0                             # % air saturation
+    lactate: 0.2                        # mM
+  drift:
+    type: linear
+    expected_abs_drift_over_run_x_noise_sd: 2.0
+  lactate_cap_g_per_l: 4.0              # Morrissey et al. (2026); ~44 mM
+
+# ---------------------------------------------------------------- Class boundaries
+# Labels come from the simulated viable cell density X, which models never see:
+#   mu_net(t) = (1/X) dX/dt
+# Thresholds are fractions of the culture's maximum mu_net.
+classes:
+  names: [early_growth, exponential, stationary_death]
+  thresholds:
+    low: 0.3
+    high: 0.7
+  # TODO confirm against methods draft Table 3. Proposed reading:
+  #   early_growth      : start  -> mu_net first reaches high * max
+  #   exponential       : then   -> mu_net falls below low * max
+  #   stationary_death  : remaining points
+  mapping: TODO
